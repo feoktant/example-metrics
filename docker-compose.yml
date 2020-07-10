@@ -15,7 +15,7 @@ services:
     volumes:
       - ./configs/nginx:/etc/nginx/templates
     ports:
-      - "80:80"
+      - 80:80
 
   example-metrics:
     image: adoptopenjdk:8u252-b09-jre-openj9-0.20.0-bionic
