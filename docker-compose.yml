@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  example-metrics:
+    image: adoptopenjdk:8u252-b09-jre-openj9-0.20.0-bionic
+    depends_on:
+      - db
+    volumes:
+      - ./target/scala-2.13/example-metrics-assembly-0.1.jar:/usr/apps/example-metrics.jar
+    command: bash -c "cd /usr/apps && java -jar example-metrics.jar"
+    ports:
+      - "8080:8080"
+
+  db:
+    image: postgres
+
+  nginx:
+    image: nginx
+#    volumes:
+#      - ./templates:/etc/nginx/templates
+    ports:
+      - "80:8080"
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+
+  influxdb:
+    image: influxdb
