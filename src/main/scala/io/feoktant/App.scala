@@ -6,8 +6,7 @@ import io.feoktant.EntityDao.entityDao
 import org.slf4j.{Logger, LoggerFactory}
 import slick.jdbc.PostgresProfile.api._
 
-import scala.concurrent.ExecutionContext
-import scala.util.{Failure, Success}
+import scala.concurrent.{ExecutionContext, Future}
 
 object App extends App with Route {
 
@@ -17,15 +16,16 @@ object App extends App with Route {
 
   val db = Database.forConfig("slick")
 
-  def createSchema(db: Database): Unit =
-    db.run(entityDao.schema.dropIfExists >> entityDao.schema.create).onComplete {
-      case Success(_) => log.info("Successfully created schema")
-      case Failure(e) =>
+  def createSchema(db: Database): Future[Unit] =
+    db.run(entityDao.schema.dropIfExists >> entityDao.schema.create).recoverWith { e =>
         log.error("Could not make schema, try again in 5 seconds", e)
         Thread.sleep(5000)
         createSchema(db)
     }
 
-  createSchema(db)
-  Http().bindAndHandle(route, "localhost", 8080)
+  for {
+    _ <- createSchema(db)
+    _ <- Http().bindAndHandle(route, "0.0.0.0", 8080)
+  } yield ()
+
 }

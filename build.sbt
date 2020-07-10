@@ -1,7 +1,9 @@
+enablePlugins(PackPlugin)
+
 name := "example-metrics"
 version := "0.1"
 scalaVersion := "2.13.3"
-mainClass in assembly := Some("io.feoktant.App")
+packMain := Map("hello" -> "io.feoktant.App")
 
 val akkaHttpV = "10.1.11"
 val akkaV = "2.6.5"

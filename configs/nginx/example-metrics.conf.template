@@ -1,5 +1,5 @@
 upstream example_metrics {
-  server 127.0.0.1:8080;
+  server example-metrics:8080;
 }
 
 server {

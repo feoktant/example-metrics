@@ -1,23 +1,14 @@
 version: '3'
 
 services:
-  example-metrics:
-    image: adoptopenjdk:8u252-b09-jre-openj9-0.20.0-bionic
-    depends_on:
-      - db
-    volumes:
-      - ./target/scala-2.13/example-metrics-assembly-0.1.jar:/usr/apps/example-metrics.jar
-    command: bash -c "cd /usr/apps && java -jar example-metrics.jar"
-    ports:
-      - "8080:8080"
 
   db:
     image: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
-    ports:
-      - "5432:5432"
+    expose:
+      - 5432
 
   nginx:
     image: nginx
@@ -25,7 +16,17 @@ services:
       - ./configs/nginx:/etc/nginx/templates
     ports:
       - "80:80"
-#
+
+  example-metrics:
+    image: adoptopenjdk:8u252-b09-jre-openj9-0.20.0-bionic
+#    depends_on:
+#      - db
+    volumes:
+      - ./target/pack:/usr/apps/example-metrics
+    command: /usr/apps/example-metrics/bin/hello
+    ports:
+      - 8080:8080
+
 #  grafana:
 #    image: grafana/grafana
 #    ports:
