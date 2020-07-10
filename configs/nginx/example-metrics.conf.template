@@ -1,0 +1,11 @@
+upstream example_metrics {
+  server 127.0.0.1:8080;
+}
+
+server {
+  listen 8070;
+  ##      server_name www.domain.com;
+  location / {
+    proxy_pass http://example_metrics;
+  }
+}

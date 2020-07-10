@@ -21,6 +21,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick"  %% "slick-hikaricp" % slickV,
   "org.postgresql"       % "postgresql"     % "42.2.14",
 
+  "ch.qos.logback" % "logback-classic" % "1.2.3",
+
   "org.scalatest"     %% "scalatest"             % "3.1.1"    % Test,
   "org.scalatestplus" %% "scalacheck-1-14"       % "3.1.1.1"  % Test,
   "org.scalatestplus" %% "scalatestplus-mockito" % "1.0.0-M2" % Test,
